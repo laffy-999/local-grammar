@@ -1,0 +1,239 @@
+{
+  "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+  "runtime": "transformers CPU",
+  "load_seconds": 0.43736058400099864,
+  "parameters": 711206246,
+  "rows": [
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-1",
+      "kind": "en-error",
+      "text": "I recieved teh notes from the meeting yesterday.",
+      "expected": "I received the notes from the meeting yesterday.",
+      "corrected": "I received the notes from the meeting yesterday.",
+      "error": "",
+      "ms": 4372,
+      "cold": true
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-2",
+      "kind": "en-error",
+      "text": "She dont have time because the tasks is not finished.",
+      "expected": "She doesn't have time because the tasks are not finished.",
+      "corrected": "She does not have time because the tasks not finished.",
+      "error": "",
+      "ms": 523,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-3",
+      "kind": "en-error",
+      "text": "We should of called him earlier.",
+      "expected": "We should have called him earlier.",
+      "corrected": "We should have called him earlier.",
+      "error": "",
+      "ms": 297,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-4",
+      "kind": "en-error",
+      "text": "Their going to present the results tomorow.",
+      "expected": "They're going to present the results tomorrow.",
+      "corrected": "They are going to present the results tomorrow.",
+      "error": "",
+      "ms": 375,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-5",
+      "kind": "en-error",
+      "text": "The meeting was cancelled becuase of the storm.",
+      "expected": "The meeting was cancelled because of the storm.",
+      "corrected": "The meeting was cancelled because of the storm.",
+      "error": "",
+      "ms": 317,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-6",
+      "kind": "en-error",
+      "text": "I definately want to join the project.",
+      "expected": "I definitely want to join the project.",
+      "corrected": "I definitely want to join the project.",
+      "error": "",
+      "ms": 212,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-7",
+      "kind": "en-error",
+      "text": "He go to the gym every morning.",
+      "expected": "He goes to the gym every morning.",
+      "corrected": "He goes to the gym every morning.",
+      "error": "",
+      "ms": 217,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-8",
+      "kind": "en-error",
+      "text": "Its a good idea to save your work.",
+      "expected": "It's a good idea to save your work.",
+      "corrected": "Its 's a good idea to save your work.",
+      "error": "",
+      "ms": 357,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-9",
+      "kind": "en-error",
+      "text": "When the meeting ends we can go home.",
+      "expected": "When the meeting ends, we can go home.",
+      "corrected": "When the meeting ends, we can go home.",
+      "error": "",
+      "ms": 240,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-10",
+      "kind": "en-error",
+      "text": "I have to finnish the report befor Friday.",
+      "expected": "I have to finish the report before Friday.",
+      "corrected": "I have to finish the report before Friday.",
+      "error": "",
+      "ms": 568,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-11",
+      "kind": "en-error",
+      "text": "There is many open questions in the draft.",
+      "expected": "There are many open questions in the draft.",
+      "corrected": "There are many open questions in the draft.",
+      "error": "",
+      "ms": 614,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-12",
+      "kind": "en-error",
+      "text": "He asked me weather I could help.",
+      "expected": "He asked me whether I could help.",
+      "corrected": "He asked me whether I could help.",
+      "error": "",
+      "ms": 1309,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-13",
+      "kind": "en-error",
+      "text": "The results was better than expected.",
+      "expected": "The results were better than expected.",
+      "corrected": "The results were better than expected.",
+      "error": "",
+      "ms": 294,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-14",
+      "kind": "en-error",
+      "text": "She has wrote three chapters already.",
+      "expected": "She has written three chapters already.",
+      "corrected": "She has written three chapters already.",
+      "error": "",
+      "ms": 290,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "en-error-15",
+      "kind": "en-error",
+      "text": "Please send me the adress of the office.",
+      "expected": "Please send me the address of the office.",
+      "corrected": "Please send me the address of the office.",
+      "error": "",
+      "ms": 208,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "clean-en-1",
+      "kind": "clean-en",
+      "text": "I need to review the notes before lunch.",
+      "expected": "I need to review the notes before lunch.",
+      "corrected": "I need to review the notes before lunch.",
+      "error": "",
+      "ms": 68,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "clean-en-2",
+      "kind": "clean-en",
+      "text": "The quarterly report is ready for review.",
+      "expected": "The quarterly report is ready for review.",
+      "corrected": "The quarterly report is ready for review.",
+      "error": "",
+      "ms": 65,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "clean-en-3",
+      "kind": "clean-en",
+      "text": "She doesn't think the deadline is realistic.",
+      "expected": "She doesn't think the deadline is realistic.",
+      "corrected": "She doesn't think the deadline is realistic.",
+      "error": "",
+      "ms": 67,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "clean-en-4",
+      "kind": "clean-en",
+      "text": "We will meet at the office on Monday morning.",
+      "expected": "We will meet at the office on Monday morning.",
+      "corrected": "We will meet at the office on Monday morning.",
+      "error": "",
+      "ms": 70,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "clean-en-5",
+      "kind": "clean-en",
+      "text": "Thanks for sending the draft, I'll read it tonight.",
+      "expected": "Thanks for sending the draft, I'll read it tonight.",
+      "corrected": "Thanks for sending the draft, I'll read it tonight.",
+      "error": "",
+      "ms": 74,
+      "cold": false
+    },
+    {
+      "model": "LFM2.5-Encoder-350M-Spellchecker (CPU, English only)",
+      "id": "clean-en-6",
+      "kind": "clean-en",
+      "text": "The API returns a JSON object with three fields.",
+      "expected": "The API returns a JSON object with three fields.",
+      "corrected": "The API returns a JSON object with three fields.",
+      "error": "",
+      "ms": 70,
+      "cold": false
+    }
+  ]
+}

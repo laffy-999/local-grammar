@@ -1,0 +1,272 @@
+{
+  "model": "langlm-de (raw, German only)",
+  "runtime": "ollama raw completion",
+  "rows": [
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-error-1",
+      "kind": "de-error",
+      "text": "Ich habe die Notizen gestern geschriben und dan vergessen.",
+      "expected": "Ich habe die Notizen gestern geschrieben und dann vergessen.",
+      "corrected": "Ich habe die Notizen gestern geschrieben und dann vergessen.",
+      "error": "",
+      "ms": 1400,
+      "cold": true
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-error-2",
+      "kind": "de-error",
+      "text": "Ich habe ein wichtige Frage, weil ich das nicht verstehe.",
+      "expected": "Ich habe eine wichtige Frage, weil ich das nicht verstehe.",
+      "corrected": "Ich habe eine wichtige Frage, weil ich das nicht verstehe.",
+      "error": "",
+      "ms": 265,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-error-3",
+      "kind": "de-error",
+      "text": "Das ist ein sehr interesante Idee für das Projekt.",
+      "expected": "Das ist eine sehr interessante Idee für das Projekt.",
+      "corrected": "Das ist eine sehr interessante Idee für das Projekt.",
+      "error": "",
+      "ms": 245,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-error-4",
+      "kind": "de-error",
+      "text": "Wir haben gestern lange diskutirt.",
+      "expected": "Wir haben gestern lange diskutiert.",
+      "corrected": "Wir haben gestern lange diskutiert.",
+      "error": "",
+      "ms": 242,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-error-5",
+      "kind": "de-error",
+      "text": "Er hat mir gesagt, das er morgen kommt.",
+      "expected": "Er hat mir gesagt, dass er morgen kommt.",
+      "corrected": "Er hat mir gesagt, dass er morgen kommt.",
+      "error": "",
+      "ms": 243,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-error-6",
+      "kind": "de-error",
+      "text": "Ich bin müde weil ich zu wenig geschlafen habe.",
+      "expected": "Ich bin müde, weil ich zu wenig geschlafen habe.",
+      "corrected": "Ich bin müde, weil ich zu wenig geschlafen habe.",
+      "error": "",
+      "ms": 278,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-error-7",
+      "kind": "de-error",
+      "text": "Sie fahren mit dem Zug nach Berlin und wir fährt mit dem Auto.",
+      "expected": "Sie fahren mit dem Zug nach Berlin und wir fahren mit dem Auto.",
+      "corrected": "Sie fahren mit dem Zug nach Berlin und wir fahren mit dem Auto.",
+      "error": "",
+      "ms": 139,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-error-8",
+      "kind": "de-error",
+      "text": "Das Wetter ist heute wirklich schön, aber ich muss arbeitten.",
+      "expected": "Das Wetter ist heute wirklich schön, aber ich muss arbeiten.",
+      "corrected": "Das Wetter ist heute wirklich schön, aber ich muss arbeiten.",
+      "error": "",
+      "ms": 259,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-error-9",
+      "kind": "de-error",
+      "text": "Der Termin ist verschoben worden, desshalb treffen wir uns später.",
+      "expected": "Der Termin ist verschoben worden, deshalb treffen wir uns später.",
+      "corrected": "Der Termin ist verschoben worden, deshalb treffen wir uns später.",
+      "error": "",
+      "ms": 278,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-error-10",
+      "kind": "de-error",
+      "text": "Ich möchte gerne ein Termin vereinbaren.",
+      "expected": "Ich möchte gerne einen Termin vereinbaren.",
+      "corrected": "Ich möchte gerne einen Termin vereinbaren.",
+      "error": "",
+      "ms": 246,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-caps-1",
+      "kind": "de-caps",
+      "text": "Wir treffen uns am montag und besprechen die ergebnisse.",
+      "expected": "Wir treffen uns am Montag und besprechen die Ergebnisse.",
+      "corrected": "Wir treffen uns am Montag und besprechen die Ergebnisse.",
+      "error": "",
+      "ms": 388,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-caps-2",
+      "kind": "de-caps",
+      "text": "Die besprechung beginnt morgen um neun Uhr im großen saal.",
+      "expected": "Die Besprechung beginnt morgen um neun Uhr im großen Saal.",
+      "corrected": "Die Besprechung beginnt morgen um neun Uhr im großen Saal.",
+      "error": "",
+      "ms": 421,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-caps-3",
+      "kind": "de-caps",
+      "text": "Ich muss noch die rechnung bezahlen und den bericht schreiben.",
+      "expected": "Ich muss noch die Rechnung bezahlen und den Bericht schreiben.",
+      "corrected": "Ich muss noch die Rechnung bezahlen und den Bericht schreiben.",
+      "error": "",
+      "ms": 382,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-caps-4",
+      "kind": "de-caps",
+      "text": "Meine schwester arbeitet in einem krankenhaus.",
+      "expected": "Meine Schwester arbeitet in einem Krankenhaus.",
+      "corrected": "Meine Schwester arbeitet in einem Krankenhaus.",
+      "error": "",
+      "ms": 517,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-caps-5",
+      "kind": "de-caps",
+      "text": "Im sommer fahren wir an den strand.",
+      "expected": "Im Sommer fahren wir an den Strand.",
+      "corrected": "Im Sommer fahren wir an den Strand.",
+      "error": "",
+      "ms": 365,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "de-caps-6",
+      "kind": "de-caps",
+      "text": "Die lehrer haben die aufgaben korrigiert.",
+      "expected": "Die Lehrer haben die Aufgaben korrigiert.",
+      "corrected": "Die Lehrer haben die Aufgaben korrigiert.",
+      "error": "",
+      "ms": 386,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "clean-de-1",
+      "kind": "clean-de",
+      "text": "Die Besprechung beginnt morgen um neun Uhr.",
+      "expected": "Die Besprechung beginnt morgen um neun Uhr.",
+      "corrected": "Die Besprechung beginnt morgen um neun Uhr.",
+      "error": "",
+      "ms": 128,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "clean-de-2",
+      "kind": "clean-de",
+      "text": "Ich habe die Notizen gestern geschrieben und danach gelesen.",
+      "expected": "Ich habe die Notizen gestern geschrieben und danach gelesen.",
+      "corrected": "Ich habe die Notizen gestern geschrieben und danach gelesen.",
+      "error": "",
+      "ms": 138,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "clean-de-3",
+      "kind": "clean-de",
+      "text": "Das Wetter ist heute schön, aber es soll morgen regnen.",
+      "expected": "Das Wetter ist heute schön, aber es soll morgen regnen.",
+      "corrected": "Das Wetter ist heute schön, aber es soll morgen regnen.",
+      "error": "",
+      "ms": 143,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "clean-de-4",
+      "kind": "clean-de",
+      "text": "Der Chef hat gestern eine neue Strategie vorgestellt.",
+      "expected": "Der Chef hat gestern eine neue Strategie vorgestellt.",
+      "corrected": "Der Chef hat gestern eine neue Strategie vorgestellt.",
+      "error": "",
+      "ms": 122,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "clean-de-5",
+      "kind": "clean-de",
+      "text": "Wir müssen noch den Bericht schreiben, damit er pünktlich fertig ist.",
+      "expected": "Wir müssen noch den Bericht schreiben, damit er pünktlich fertig ist.",
+      "corrected": "Wir müssen noch den Bericht schreiben, damit er pünktlich fertig ist.",
+      "error": "",
+      "ms": 156,
+      "cold": false
+    },
+    {
+      "model": "langlm-de (raw, German only)",
+      "id": "clean-de-6",
+      "kind": "clean-de",
+      "text": "Kannst du mir bitte die Datei per E-Mail schicken?",
+      "expected": "Kannst du mir bitte die Datei per E-Mail schicken?",
+      "corrected": "Kannst du mir bitte die Datei per E-Mail schicken?",
+      "error": "",
+      "ms": 158,
+      "cold": false
+    }
+  ],
+  "memory": {
+    "models": [
+      {
+        "name": "langlm-de:latest",
+        "model": "langlm-de:latest",
+        "size": 898881289,
+        "digest": "6b43988813ac7830df3a822be4c06cb56a021377aa022b1499da5775ab3bca4e",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "llama",
+          "families": [
+            "llama"
+          ],
+          "parameter_size": "1.3B",
+          "quantization_level": "Q4_K_M"
+        },
+        "expires_at": "2026-10-16T14:11:44.79896974+03:00",
+        "size_vram": 898881289,
+        "context_length": 1024,
+        "runner": "llamacpp"
+      }
+    ]
+  }
+}

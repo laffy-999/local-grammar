@@ -1,0 +1,380 @@
+[
+ {
+  "id": "en-error-1",
+  "kind": "en-error",
+  "text": "I recieved teh notes from the meeting yesterday.",
+  "expected": "I received the notes from the meeting yesterday."
+ },
+ {
+  "id": "en-error-2",
+  "kind": "en-error",
+  "text": "She dont have time because the tasks is not finished.",
+  "expected": "She doesn't have time because the tasks are not finished."
+ },
+ {
+  "id": "en-error-3",
+  "kind": "en-error",
+  "text": "We should of called him earlier.",
+  "expected": "We should have called him earlier."
+ },
+ {
+  "id": "en-error-4",
+  "kind": "en-error",
+  "text": "Their going to present the results tomorow.",
+  "expected": "They're going to present the results tomorrow."
+ },
+ {
+  "id": "en-error-5",
+  "kind": "en-error",
+  "text": "The meeting was cancelled becuase of the storm.",
+  "expected": "The meeting was cancelled because of the storm."
+ },
+ {
+  "id": "en-error-6",
+  "kind": "en-error",
+  "text": "I definately want to join the project.",
+  "expected": "I definitely want to join the project."
+ },
+ {
+  "id": "en-error-7",
+  "kind": "en-error",
+  "text": "He go to the gym every morning.",
+  "expected": "He goes to the gym every morning."
+ },
+ {
+  "id": "en-error-8",
+  "kind": "en-error",
+  "text": "Its a good idea to save your work.",
+  "expected": "It's a good idea to save your work."
+ },
+ {
+  "id": "en-error-9",
+  "kind": "en-error",
+  "text": "When the meeting ends we can go home.",
+  "expected": "When the meeting ends, we can go home."
+ },
+ {
+  "id": "en-error-10",
+  "kind": "en-error",
+  "text": "I have to finnish the report befor Friday.",
+  "expected": "I have to finish the report before Friday."
+ },
+ {
+  "id": "en-error-11",
+  "kind": "en-error",
+  "text": "There is many open questions in the draft.",
+  "expected": "There are many open questions in the draft."
+ },
+ {
+  "id": "en-error-12",
+  "kind": "en-error",
+  "text": "He asked me weather I could help.",
+  "expected": "He asked me whether I could help."
+ },
+ {
+  "id": "en-error-13",
+  "kind": "en-error",
+  "text": "The results was better than expected.",
+  "expected": "The results were better than expected."
+ },
+ {
+  "id": "en-error-14",
+  "kind": "en-error",
+  "text": "She has wrote three chapters already.",
+  "expected": "She has written three chapters already."
+ },
+ {
+  "id": "en-error-15",
+  "kind": "en-error",
+  "text": "Please send me the adress of the office.",
+  "expected": "Please send me the address of the office."
+ },
+ {
+  "id": "de-error-1",
+  "kind": "de-error",
+  "text": "Ich habe die Notizen gestern geschriben und dan vergessen.",
+  "expected": "Ich habe die Notizen gestern geschrieben und dann vergessen."
+ },
+ {
+  "id": "de-error-2",
+  "kind": "de-error",
+  "text": "Ich habe ein wichtige Frage, weil ich das nicht verstehe.",
+  "expected": "Ich habe eine wichtige Frage, weil ich das nicht verstehe."
+ },
+ {
+  "id": "de-error-3",
+  "kind": "de-error",
+  "text": "Das ist ein sehr interesante Idee für das Projekt.",
+  "expected": "Das ist eine sehr interessante Idee für das Projekt."
+ },
+ {
+  "id": "de-error-4",
+  "kind": "de-error",
+  "text": "Wir haben gestern lange diskutirt.",
+  "expected": "Wir haben gestern lange diskutiert."
+ },
+ {
+  "id": "de-error-5",
+  "kind": "de-error",
+  "text": "Er hat mir gesagt, das er morgen kommt.",
+  "expected": "Er hat mir gesagt, dass er morgen kommt."
+ },
+ {
+  "id": "de-error-6",
+  "kind": "de-error",
+  "text": "Ich bin müde weil ich zu wenig geschlafen habe.",
+  "expected": "Ich bin müde, weil ich zu wenig geschlafen habe."
+ },
+ {
+  "id": "de-error-7",
+  "kind": "de-error",
+  "text": "Sie fahren mit dem Zug nach Berlin und wir fährt mit dem Auto.",
+  "expected": "Sie fahren mit dem Zug nach Berlin und wir fahren mit dem Auto."
+ },
+ {
+  "id": "de-error-8",
+  "kind": "de-error",
+  "text": "Das Wetter ist heute wirklich schön, aber ich muss arbeitten.",
+  "expected": "Das Wetter ist heute wirklich schön, aber ich muss arbeiten."
+ },
+ {
+  "id": "de-error-9",
+  "kind": "de-error",
+  "text": "Der Termin ist verschoben worden, desshalb treffen wir uns später.",
+  "expected": "Der Termin ist verschoben worden, deshalb treffen wir uns später."
+ },
+ {
+  "id": "de-error-10",
+  "kind": "de-error",
+  "text": "Ich möchte gerne ein Termin vereinbaren.",
+  "expected": "Ich möchte gerne einen Termin vereinbaren."
+ },
+ {
+  "id": "de-caps-1",
+  "kind": "de-caps",
+  "text": "Wir treffen uns am montag und besprechen die ergebnisse.",
+  "expected": "Wir treffen uns am Montag und besprechen die Ergebnisse."
+ },
+ {
+  "id": "de-caps-2",
+  "kind": "de-caps",
+  "text": "Die besprechung beginnt morgen um neun Uhr im großen saal.",
+  "expected": "Die Besprechung beginnt morgen um neun Uhr im großen Saal."
+ },
+ {
+  "id": "de-caps-3",
+  "kind": "de-caps",
+  "text": "Ich muss noch die rechnung bezahlen und den bericht schreiben.",
+  "expected": "Ich muss noch die Rechnung bezahlen und den Bericht schreiben."
+ },
+ {
+  "id": "de-caps-4",
+  "kind": "de-caps",
+  "text": "Meine schwester arbeitet in einem krankenhaus.",
+  "expected": "Meine Schwester arbeitet in einem Krankenhaus."
+ },
+ {
+  "id": "de-caps-5",
+  "kind": "de-caps",
+  "text": "Im sommer fahren wir an den strand.",
+  "expected": "Im Sommer fahren wir an den Strand."
+ },
+ {
+  "id": "de-caps-6",
+  "kind": "de-caps",
+  "text": "Die lehrer haben die aufgaben korrigiert.",
+  "expected": "Die Lehrer haben die Aufgaben korrigiert."
+ },
+ {
+  "id": "clean-en-1",
+  "kind": "clean-en",
+  "text": "I need to review the notes before lunch.",
+  "expected": "I need to review the notes before lunch."
+ },
+ {
+  "id": "clean-en-2",
+  "kind": "clean-en",
+  "text": "The quarterly report is ready for review.",
+  "expected": "The quarterly report is ready for review."
+ },
+ {
+  "id": "clean-en-3",
+  "kind": "clean-en",
+  "text": "She doesn't think the deadline is realistic.",
+  "expected": "She doesn't think the deadline is realistic."
+ },
+ {
+  "id": "clean-en-4",
+  "kind": "clean-en",
+  "text": "We will meet at the office on Monday morning.",
+  "expected": "We will meet at the office on Monday morning."
+ },
+ {
+  "id": "clean-en-5",
+  "kind": "clean-en",
+  "text": "Thanks for sending the draft, I'll read it tonight.",
+  "expected": "Thanks for sending the draft, I'll read it tonight."
+ },
+ {
+  "id": "clean-en-6",
+  "kind": "clean-en",
+  "text": "The API returns a JSON object with three fields.",
+  "expected": "The API returns a JSON object with three fields."
+ },
+ {
+  "id": "clean-de-1",
+  "kind": "clean-de",
+  "text": "Die Besprechung beginnt morgen um neun Uhr.",
+  "expected": "Die Besprechung beginnt morgen um neun Uhr."
+ },
+ {
+  "id": "clean-de-2",
+  "kind": "clean-de",
+  "text": "Ich habe die Notizen gestern geschrieben und danach gelesen.",
+  "expected": "Ich habe die Notizen gestern geschrieben und danach gelesen."
+ },
+ {
+  "id": "clean-de-3",
+  "kind": "clean-de",
+  "text": "Das Wetter ist heute schön, aber es soll morgen regnen.",
+  "expected": "Das Wetter ist heute schön, aber es soll morgen regnen."
+ },
+ {
+  "id": "clean-de-4",
+  "kind": "clean-de",
+  "text": "Der Chef hat gestern eine neue Strategie vorgestellt.",
+  "expected": "Der Chef hat gestern eine neue Strategie vorgestellt."
+ },
+ {
+  "id": "clean-de-5",
+  "kind": "clean-de",
+  "text": "Wir müssen noch den Bericht schreiben, damit er pünktlich fertig ist.",
+  "expected": "Wir müssen noch den Bericht schreiben, damit er pünktlich fertig ist."
+ },
+ {
+  "id": "clean-de-6",
+  "kind": "clean-de",
+  "text": "Kannst du mir bitte die Datei per E-Mail schicken?",
+  "expected": "Kannst du mir bitte die Datei per E-Mail schicken?"
+ },
+ {
+  "id": "mixed-clean-1",
+  "kind": "mixed-clean",
+  "text": "Please review the Entwurf before the Besprechung.",
+  "expected": "Please review the Entwurf before the Besprechung."
+ },
+ {
+  "id": "mixed-clean-2",
+  "kind": "mixed-clean",
+  "text": "Bitte lies das README vor dem Meeting.",
+  "expected": "Bitte lies das README vor dem Meeting."
+ },
+ {
+  "id": "mixed-clean-3",
+  "kind": "mixed-clean",
+  "text": "Das Meeting wurde auf Freitag verschoben, please update the calendar.",
+  "expected": "Das Meeting wurde auf Freitag verschoben, please update the calendar."
+ },
+ {
+  "id": "mixed-clean-4",
+  "kind": "mixed-clean",
+  "text": "I sent the Rechnung to the client yesterday.",
+  "expected": "I sent the Rechnung to the client yesterday."
+ },
+ {
+  "id": "mixed-clean-5",
+  "kind": "mixed-clean",
+  "text": "Wir brauchen ein neues Backend für das Projekt.",
+  "expected": "Wir brauchen ein neues Backend für das Projekt."
+ },
+ {
+  "id": "mixed-clean-6",
+  "kind": "mixed-clean",
+  "text": "The Kindergarten opens at eight o'clock.",
+  "expected": "The Kindergarten opens at eight o'clock."
+ },
+ {
+  "id": "mixed-clean-7",
+  "kind": "mixed-clean",
+  "text": "Heute habe ich einen Call mit dem Team, danach schreibe ich die Release Notes.",
+  "expected": "Heute habe ich einen Call mit dem Team, danach schreibe ich die Release Notes."
+ },
+ {
+  "id": "mixed-clean-8",
+  "kind": "mixed-clean",
+  "text": "Can you check the Pull Request before the Standup?",
+  "expected": "Can you check the Pull Request before the Standup?"
+ },
+ {
+  "id": "mixed-error-1",
+  "kind": "mixed-error",
+  "text": "Das Meeting wurde auf montag verschoben.",
+  "expected": "Das Meeting wurde auf Montag verschoben."
+ },
+ {
+  "id": "mixed-error-2",
+  "kind": "mixed-error",
+  "text": "I recieved the Rechnung yesterday.",
+  "expected": "I received the Rechnung yesterday."
+ },
+ {
+  "id": "syntax-error-1",
+  "kind": "syntax-error",
+  "text": "I recieved a message from [[Jhon]] about `teh_flag` #work.",
+  "expected": "I received a message from [[Jhon]] about `teh_flag` #work."
+ },
+ {
+  "id": "syntax-error-2",
+  "kind": "syntax-error",
+  "text": "Ich habe ein wichtige Frage zu [[Jhon]] und `teh_flag`.",
+  "expected": "Ich habe eine wichtige Frage zu [[Jhon]] und `teh_flag`."
+ },
+ {
+  "id": "syntax-error-3",
+  "kind": "syntax-error",
+  "text": "See https://example.com/teh for the recieved data.",
+  "expected": "See https://example.com/teh for the received data."
+ },
+ {
+  "id": "syntax-error-4",
+  "kind": "syntax-error",
+  "text": "status:: teh draft\nI recieved the notes.",
+  "expected": "status:: teh draft\nI received the notes."
+ },
+ {
+  "id": "syntax-error-5",
+  "kind": "syntax-error",
+  "text": "The formula $x_{teh}$ is not recieved correctly.",
+  "expected": "The formula $x_{teh}$ is not received correctly."
+ },
+ {
+  "id": "syntax-error-6",
+  "kind": "syntax-error",
+  "text": "Wir treffen uns am montag, siehe ((12345678-abcd-1234-abcd-123456789abc)).",
+  "expected": "Wir treffen uns am Montag, siehe ((12345678-abcd-1234-abcd-123456789abc))."
+ },
+ {
+  "id": "syntax-clean-1",
+  "kind": "syntax-clean",
+  "text": "See [[Teh Project]] and #teh-tag for details.",
+  "expected": "See [[Teh Project]] and #teh-tag for details."
+ },
+ {
+  "id": "syntax-clean-2",
+  "kind": "syntax-clean",
+  "text": "The `recieved_total` variable is defined in https://example.com/teh.",
+  "expected": "The `recieved_total` variable is defined in https://example.com/teh."
+ },
+ {
+  "id": "syntax-clean-3",
+  "kind": "syntax-clean",
+  "text": "Run `npm test` before you push, then open [[Release Notes]].",
+  "expected": "Run `npm test` before you push, then open [[Release Notes]]."
+ },
+ {
+  "id": "syntax-clean-4",
+  "kind": "syntax-clean",
+  "text": "Schau dir [[Besprechung]] und `npm run build` an.",
+  "expected": "Schau dir [[Besprechung]] und `npm run build` an."
+ }
+]

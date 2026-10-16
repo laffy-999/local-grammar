@@ -1,0 +1,13 @@
+import { build } from 'esbuild';
+import { mkdir, writeFile, readFile, copyFile } from 'node:fs/promises';
+const { version } = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
+await mkdir('dist/obsidian', { recursive: true });
+await mkdir('dist/logseq', { recursive: true });
+await build({ entryPoints: ['src/obsidian/main.ts'], outfile: 'dist/obsidian/main.js', bundle: true, format: 'cjs', platform: 'browser', target: 'es2022', external: ['obsidian', '@codemirror/state', '@codemirror/view'], sourcemap: false });
+await build({ entryPoints: ['src/logseq/main.ts'], outfile: 'dist/logseq/main.js', bundle: true, format: 'iife', platform: 'browser', target: 'es2022', sourcemap: false });
+await writeFile('dist/obsidian/manifest.json', JSON.stringify({ id: 'local-grammar', name: 'Local Grammar', version, minAppVersion: '1.5.0', description: 'Private English and German grammar checking with a local Ollama model.', author: 'local-grammar contributors', isDesktopOnly: true }, null, 2));
+await writeFile('dist/logseq/package.json', JSON.stringify({ name: 'local-grammar', version, main: 'index.html', description: 'Local English and German grammar checking with Ollama', author: 'local-grammar contributors', logseq: { id: 'local-grammar', title: 'Local Grammar' } }, null, 2));
+await copyFile('src/obsidian/styles.css', 'dist/obsidian/styles.css');
+await copyFile('src/logseq/index.html', 'dist/logseq/index.html');
+await copyFile('src/logseq/styles.css', 'dist/logseq/styles.css');
+console.log('Built dist/obsidian and dist/logseq');

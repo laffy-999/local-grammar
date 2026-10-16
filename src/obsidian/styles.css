@@ -1,0 +1,9 @@
+.local-grammar-mark { text-decoration-line: underline; text-decoration-style: wavy; text-decoration-color: var(--text-error); text-underline-offset: 4px; cursor: pointer; }
+.local-grammar-insertion { color: var(--text-error); font-weight: bold; cursor: pointer; }
+.local-grammar-review { max-width: 680px; }
+.local-grammar-muted, .local-grammar-card small { color: var(--text-muted); }
+.local-grammar-card { padding: 16px; margin: 12px 0; border: 1px solid var(--background-modifier-border); border-radius: 10px; }
+.local-grammar-context { line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+.local-grammar-context mark { color: var(--text-normal); background: var(--text-highlight-bg); border-bottom: 2px solid var(--text-error); }
+.local-grammar-actions { display: flex; gap: 8px; margin-top: 16px; }
+.local-grammar-card strong { display: block; overflow-wrap: anywhere; }

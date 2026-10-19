@@ -1,8 +1,9 @@
 import '@logseq/libs';
 import type { BlockEntity } from '@logseq/libs/dist/LSPlugin';
-import { Checker, DEFAULTS, applyMistake, isCancelled, mistakeKey, type Mistake, type Settings } from '../core/checker';
+import { Checker, DEFAULTS, isCancelled, mistakeKey, type Mistake, type Settings } from '../core/checker';
+import { Review } from '../core/review';
 
-interface BlockResult { uuid: string; text: string; mistakes: Mistake[] }
+interface BlockResult { uuid: string; review: Review }
 const checker = new Checker();
 const results = new Map<string, BlockResult>();
 const ignored = new Map<string, Set<string>>();
@@ -13,6 +14,7 @@ let polling = false;
 let message = 'Open a block, then check it. All checking stays on this machine.';
 let pageMode = false;
 let pageIdentity = '';
+let applying = false;
 const root = document.getElementById('app')!;
 
 function settings(): Settings {
@@ -21,7 +23,7 @@ function settings(): Settings {
 }
 
 function button(label: string, action: () => void, primary = false) {
-  const el = document.createElement('button'); el.textContent = label;
+  const el = document.createElement('button'); el.textContent = label; el.disabled = applying;
   if (primary) el.className = 'primary';
   el.onclick = action; return el;
 }
@@ -29,41 +31,48 @@ function button(label: string, action: () => void, primary = false) {
 function render() {
   root.replaceChildren();
   const header = document.createElement('header');
-  const title = document.createElement('h2'); title.textContent = 'Local Grammar'; header.append(title);
+  const title = document.createElement('h2'); title.textContent = 'Open Grammar'; header.append(title);
   header.append(button('Close', () => logseq.hideMainUI())); root.append(header);
   const tools = document.createElement('nav');
   tools.append(button('Check block', () => void checkCurrent()), button('Check page', () => void checkPage()), button('Settings', () => logseq.showSettingsUI())); root.append(tools);
   const status = document.createElement('p'); status.className = 'status'; status.textContent = message; root.append(status);
+  if ([...results.values()].some(r => r.review.mistakes.length)) {
+    root.append(button('Accept all in page list', () => void applyList(), true));
+  }
   for (const result of results.values()) {
-    if (!result.mistakes.length) continue;
+    const { review } = result;
+    if (!review.mistakes.length) continue;
     const block = document.createElement('section');
     const preview = document.createElement('p'); preview.className = 'preview';
     let pos = 0;
-    for (const m of result.mistakes) {
-      preview.append(document.createTextNode(result.text.slice(pos, m.from)));
+    for (const m of review.mistakes) {
+      preview.append(document.createTextNode(review.text.slice(pos, m.from)));
       const mark = document.createElement('mark'); mark.textContent = m.original || '▏';
       mark.tabIndex = 0; mark.title = 'Show suggestion';
       mark.onclick = () => document.getElementById(`fix-${result.uuid}-${m.from}`)?.focus();
       mark.onkeydown = e => { if (e.key === 'Enter') mark.click(); };
       preview.append(mark); pos = m.to;
     }
-    preview.append(document.createTextNode(result.text.slice(pos))); block.append(preview);
-    for (const m of result.mistakes) {
-      const card = document.createElement('article');
-      const label = document.createElement('small'); label.textContent = `${m.language.toUpperCase()} · ${m.category} · character ${m.from + 1}`;
-      const change = document.createElement('strong'); change.textContent = `${m.original || '(insert)'} → ${m.replacement || '(delete)'}`;
-      const explanation = document.createElement('p'); explanation.textContent = m.explanation;
-      const actions = document.createElement('div'); actions.className = 'actions';
-      const apply = button('Apply fix', () => void applyFix(result, m), true); apply.id = `fix-${result.uuid}-${m.from}`;
-      actions.append(apply, button('Ignore', () => {
-        const key = result.uuid + ':' + result.text;
-        const set = ignored.get(key) ?? new Set<string>(); set.add(mistakeKey(m)); ignored.set(key, set);
-        result.mistakes = result.mistakes.filter(other => other !== m);
-        const count = [...results.values()].reduce((n, r) => n + r.mistakes.length, 0);
-        message = count ? `${count} suggestion${count === 1 ? '' : 's'} remaining.` : 'All suggestions dismissed. Your text is unchanged.';
-        render();
-      }));
-      card.append(label, change, explanation, actions); block.append(card);
+    preview.append(document.createTextNode(review.text.slice(pos))); block.append(preview);
+    for (const suggestion of review.suggestions) {
+      const group = document.createElement('div');
+      group.append(button('Accept all in suggestion', () => void applyFix(result, suggestion.pieces)));
+      for (const m of suggestion.pieces) {
+        const card = document.createElement('article');
+        const label = document.createElement('small'); label.textContent = `${m.language.toUpperCase()} · ${m.category} · character ${m.from + 1}`;
+        const change = document.createElement('strong'); change.textContent = `${JSON.stringify(m.original)} → ${JSON.stringify(m.replacement)}`;
+        const explanation = document.createElement('p'); explanation.textContent = m.explanation;
+        const actions = document.createElement('div'); actions.className = 'actions';
+        const apply = button('Accept edit', () => void applyFix(result, [m]), true); apply.id = `fix-${result.uuid}-${m.from}`;
+        actions.append(apply, button('Ignore edit', () => {
+          if (result.review !== review) return;
+          const key = result.uuid + ':' + review.text;
+          const set = ignored.get(key) ?? new Set<string>(); set.add(mistakeKey(m)); ignored.set(key, set);
+          result.review = review.dismiss(m); remaining(); render();
+        }));
+        card.append(label, change, explanation, actions); group.append(card);
+      }
+      block.append(group);
     }
     root.append(block);
   }
@@ -74,13 +83,45 @@ async function blockText(uuid: string) {
   return (await logseq.Editor.getBlock(uuid))?.content ?? null;
 }
 
-async function applyFix(result: BlockResult, mistake: Mistake) {
-  const current = await blockText(result.uuid);
-  if (current !== result.text) { message = 'This block changed. Check it again before applying a fix.'; render(); return; }
+function remaining() {
+  const count = [...results.values()].reduce((n, r) => n + r.review.mistakes.length, 0);
+  message = count ? `${count} edit${count === 1 ? '' : 's'} remaining.` : 'No edits remaining in this review.';
+}
+
+async function applyFix(result: BlockResult, pieces: Mistake[]) {
+  if (applying) return;
+  applying = true; request?.abort(); clearTimeout(timer); render();
+  try {
+    await applyResult(result, pieces);
+    remaining();
+  } catch (error) { message = error instanceof Error ? error.message : String(error); }
+  finally { applying = false; render(); }
+}
+
+async function applyResult(result: BlockResult, pieces: Mistake[]) {
+  const review = result.review;
+  if (results.get(result.uuid) !== result || await blockText(result.uuid) !== review.text) {
+    throw new Error('This block changed. Check it again before applying a fix.');
+  }
+  const next = review.accept(pieces);
   // Commit the editing buffer before updating the block to prevent an old buffer overwriting the fix.
   if (await logseq.Editor.checkEditing() === result.uuid) await logseq.Editor.exitEditingMode();
-  await logseq.Editor.updateBlock(result.uuid, applyMistake(current, mistake));
-  await checkBlocks([result.uuid], false);
+  await logseq.Editor.updateBlock(result.uuid, next.text);
+  result.review = next;
+  observed = result.uuid + ':' + next.text;
+}
+
+async function applyList() {
+  if (applying) return;
+  applying = true; request?.abort(); clearTimeout(timer); render();
+  try {
+    const pending = [...results.values()].filter(r => r.review.mistakes.length);
+    // Preflight every block before modifying any; check again before each write.
+    for (const r of pending) if (await blockText(r.uuid) !== r.review.text) throw new Error('A block changed. Check the page again before accepting all.');
+    for (const r of pending) await applyResult(r, r.review.mistakes);
+    remaining();
+  } catch (error) { message = error instanceof Error ? error.message : String(error); }
+  finally { applying = false; render(); }
 }
 
 async function checkBlocks(uuids: string[], replace: boolean) {
@@ -95,11 +136,11 @@ async function checkBlocks(uuids: string[], replace: boolean) {
       if (controller.signal.aborted) return;
       if (await blockText(uuid) !== text) { results.delete(uuid); continue; }
       const dismissed = ignored.get(uuid + ':' + text);
-      results.set(uuid, { uuid, text, mistakes: all.filter(m => !dismissed?.has(mistakeKey(m))) });
+      results.set(uuid, { uuid, review: new Review(text, all.filter(m => !dismissed?.has(mistakeKey(m)))) });
       render();
     }
     if (controller.signal.aborted) return;
-    const count = [...results.values()].reduce((n, r) => n + r.mistakes.length, 0);
+    const count = [...results.values()].reduce((n, r) => n + r.review.mistakes.length, 0);
     message = count ? `${count} suggestion${count === 1 ? '' : 's'}. Click an underlined mistake or apply a fix below.` : 'No suggestions. Your text is unchanged.';
     render();
   } catch (error) {
@@ -128,7 +169,7 @@ async function checkPage() {
 }
 
 async function pollEditor() {
-  if (polling || !settings().autoCheck) return;
+  if (polling || applying || !settings().autoCheck) return;
   polling = true;
   try {
     const page = await logseq.Editor.getCurrentPage();
@@ -158,9 +199,9 @@ async function main() {
   ]);
   logseq.setMainUIInlineStyle({ position: 'fixed', top: '52px', left: 'auto', right: '24px', width: 'min(440px, calc(100vw - 32px))', height: 'min(80vh, 800px)', zIndex: 100 });
   logseq.provideModel({ open: () => { render(); logseq.showMainUI({ autoFocus: false }); }, check: () => void checkCurrent() });
-  logseq.App.registerUIItem('toolbar', { key: 'local-grammar', template: '<a data-on-click="open" title="Local Grammar" style="font-weight:700;font-size:17px">Aa✓</a>' });
-  logseq.App.registerCommandPalette({ key: 'check-block', label: 'Local Grammar: check current block', keybinding: { binding: 'mod+shift+g' } }, () => void checkCurrent());
-  logseq.App.registerCommandPalette({ key: 'check-page', label: 'Local Grammar: check current page' }, () => void checkPage());
+  logseq.App.registerUIItem('toolbar', { key: 'open-grammar', template: '<a data-on-click="open" title="Open Grammar" style="font-weight:700;font-size:17px">Aa✓</a>' });
+  logseq.App.registerCommandPalette({ key: 'check-block', label: 'Open Grammar: check current block', keybinding: { binding: 'mod+shift+g' } }, () => void checkCurrent());
+  logseq.App.registerCommandPalette({ key: 'check-page', label: 'Open Grammar: check current page' }, () => void checkPage());
   logseq.onSettingsChanged(() => { checker.clear(); observed = ''; request?.abort(); clearTimeout(timer); results.clear(); render(); });
   const interval = window.setInterval(() => void pollEditor().catch(console.error), 450);
   logseq.beforeunload(async () => { clearInterval(interval); clearTimeout(timer); request?.abort(); });

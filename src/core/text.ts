@@ -1,4 +1,4 @@
-import { diffChars, diffWordsWithSpace } from 'diff';
+import { diffChars } from 'diff';
 
 export type Language = 'en' | 'de';
 export interface Mistake {
@@ -84,41 +84,49 @@ export function maskSyntax(text: string) {
 }
 
 export function deriveMistakes(original: string, corrected: string, language: Language): Mistake[] {
-  const result: Mistake[] = [];
-  let offset = 0, from = 0, removed = '', added = '';
-  const flush = () => {
-    if (removed !== added) {
-      // Trim unchanged edges, keeping UTF-16 coordinates used by both editors.
-      let left = 0, right = 0;
-      while (left < removed.length && left < added.length && removed[left] === added[left]) left++;
-      while (right < removed.length - left && right < added.length - left && removed.at(-1 - right) === added.at(-1 - right)) right++;
-      // Do not split a surrogate pair at a diff boundary.
-      if (left && /[\uDC00-\uDFFF]/.test(removed[left] ?? added[left] ?? '')) left--;
-      let before = removed.slice(left, removed.length - right), after = added.slice(left, added.length - right);
-      let start = from + left, end = from + removed.length - right;
-      const category = /^[\s\p{P}]*$/u.test(before + after) ? 'punctuation' : 'grammar';
-      if (category === 'grammar') {
-        // Show the whole word ("recieved" -> "received"), not the changed letters ("ie" -> "ei").
-        const letter = /\p{L}/u;
-        let wordStart = start, wordEnd = end;
-        while (wordStart > 0 && letter.test(original[wordStart - 1])) wordStart--;
-        while (wordEnd < original.length && letter.test(original[wordEnd])) wordEnd++;
-        const prefix = original.slice(wordStart, start), suffix = original.slice(end, wordEnd);
-        before = prefix + before + suffix; after = prefix + after + suffix; start = wordStart; end = wordEnd;
-      }
-      result.push({ from: start, to: end, original: before, replacement: after,
-        explanation: category === 'punctuation' ? 'Correct punctuation.' : (language === 'de' ? 'Rechtschreibung oder Grammatik korrigieren.' : 'Correct spelling or grammar.'), category, language });
+  // Align words, punctuation and whitespace separately. Equal spaces must not shift
+  // adjacent word replacements when the model also normalizes a double space.
+  const tokens = (text: string) => text.match(/[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*|\s+|[^\s]/gu) ?? [];
+  const before = tokens(original), after = tokens(corrected);
+  const kind = (token: string) => /^\s+$/u.test(token) ? 0 : /^[\p{L}\p{N}]/u.test(token) ? 1 : 2;
+  const beforeKinds = before.map(kind), afterKinds = after.map(kind);
+  const width = after.length + 1;
+  const path = new Uint8Array((before.length + 1) * width);
+  let previous = new Float64Array(width), next = new Float64Array(width);
+  for (let j = 1; j < width; j++) { previous[j] = j; path[j] = 2; }
+  for (let i = 1; i <= before.length; i++) {
+    next[0] = i; path[i * width] = 1;
+    for (let j = 1; j < width; j++) {
+      const a = before[i - 1], b = after[j - 1];
+      const cost = a === b ? 0 : beforeKinds[i - 1] !== afterKinds[j - 1] ? 3 : beforeKinds[i - 1] === 0 ? 0.1 : 1;
+      let best = previous[j - 1] + cost, direction = 0;
+      if (previous[j] + 1 < best) { best = previous[j] + 1; direction = 1; }
+      if (next[j - 1] + 1 < best) { best = next[j - 1] + 1; direction = 2; }
+      next[j] = best; path[i * width + j] = direction;
     }
-    removed = ''; added = '';
-  };
-  for (const part of diffWordsWithSpace(original, corrected)) {
-    if (part.added || part.removed) {
-      if (!removed && !added) from = offset;
-      if (part.removed) { removed += part.value; offset += part.value.length; }
-      else added += part.value;
-    } else { flush(); offset += part.value.length; }
+    [previous, next] = [next, previous];
   }
-  flush();
+  const aligned: [string, string][] = [];
+  for (let i = before.length, j = after.length; i || j;) {
+    const direction = path[i * width + j];
+    if (direction === 0) aligned.push([before[--i], after[--j]]);
+    else if (direction === 1) aligned.push([before[--i], '']);
+    else aligned.push(['', after[--j]]);
+  }
+  const result: Mistake[] = [];
+  let offset = 0;
+  for (const [removed, added] of aligned.reverse()) {
+    if (removed !== added) {
+      const category = /^[\s\p{P}]*$/u.test(removed + added) ? 'punctuation' : 'grammar';
+      const explanation = category === 'punctuation' ? 'Correct punctuation or spacing.' : language === 'de' ? 'Rechtschreibung oder Grammatik korrigieren.' : 'Correct spelling or grammar.';
+      const last = result.at(-1);
+      // A new word owns its inserted leading separator, but never another word.
+      if (!removed && category === 'grammar' && last?.from === offset && last.to === offset && /^\s+$/u.test(last.replacement)) {
+        last.replacement += added; last.category = category; last.explanation = explanation;
+      } else result.push({ from: offset, to: offset + removed.length, original: removed, replacement: added, explanation, category, language });
+    }
+    offset += removed.length;
+  }
   const protected_ = protectedRanges(original);
   if (result.some(m => protected_.some(r => m.from === m.to ? m.from > r.from && m.from < r.to : m.from < r.to && m.to > r.from))) {
     throw new Error('The model moved or changed protected syntax. No suggestions were applied.');

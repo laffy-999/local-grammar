@@ -1,8 +1,8 @@
-# local-grammar
+# Open Grammar
 
 English and German spelling and grammar suggestions inside **Logseq** and **Obsidian**, checked by a small local Ollama model.
 No account, cloud model, external checking service, automatic rewrite, or automatic application of suggestions.
-You review and apply each individual change.
+Accept or ignore individual word and punctuation edits, accept all pending edits in a paragraph suggestion, or accept the entire note/page review list.
 
 ## Screenshots
 
@@ -10,13 +10,15 @@ Real Obsidian 1.14.4 editor, a throwaway vault, `qwen3.5:4b`.
 Mistakes get a wavy underline, while the mixed English/German sentence, `[[Jhon]]`, inline code, the tag, and the URL are left alone.
 
 ![Obsidian editor with underlined mistakes](docs/screenshots/obsidian-marks.png)
-![Obsidian review list with one-click fixes](docs/screenshots/obsidian-review.png)
-![Obsidian after applying only the German fix](docs/screenshots/obsidian-after-fix.png)
+![Obsidian piecewise review with suggestion and note accept-all controls](docs/screenshots/obsidian-review.png)
+![Obsidian after accepting only one word correction](docs/screenshots/obsidian-after-fix.png)
+![Obsidian after accepting the whole bilingual note list](docs/screenshots/obsidian-after-all.png)
 
 Real Logseq 0.10.15, a throwaway graph, **Check page**.
 The panel lists each block's suggestions, and links, code and tags are untouched.
 
 ![Logseq review panel](docs/screenshots/logseq-panel.png)
+![Logseq after accepting the whole bilingual page list](docs/screenshots/logseq-after-all.png)
 
 ## Requirements and Ollama setup
 
@@ -52,23 +54,26 @@ npm run build
 
 The build produces two independent plugin folders under `dist/`.
 Both bundle the same shared checking core; neither needs a separate grammar-checking server besides Ollama.
-The GitHub check workflow also builds downloadable `local-grammar-plugins` artifacts for reviewed changes.
+The GitHub check workflow also builds downloadable `open-grammar-plugins` artifacts for reviewed changes.
 
 ### Obsidian
 
-1. Create `<your-vault>/.obsidian/plugins/local-grammar/`.
+1. Create `<your-vault>/.obsidian/plugins/open-grammar/`.
 2. Copy `main.js`, `manifest.json`, and `styles.css` from `dist/obsidian/` into that folder.
-3. In Obsidian, enable community plugins for this vault, reload the app if necessary, and enable **Local Grammar**.
-4. Open **Settings → Local Grammar** and confirm the Ollama URL and model.
+3. In Obsidian, enable community plugins for this vault, reload the app if necessary, and enable **Open Grammar**.
+4. Open **Settings → Open Grammar** and confirm the Ollama URL and model.
 5. Open a Markdown note in editing mode, not Reading view.
 
 Mistakes have wavy underlines; missing punctuation has a small insertion marker.
-Click a mark to review its suggestion, or use **Local Grammar: Show suggestion at cursor** (`Alt+Enter`).
+Click a mark to review its paragraph suggestion, or use **Open Grammar: Show suggestion at cursor** (`Alt+Enter`).
 That command selects the suggestion at the cursor, or the next one after it.
-The suggestion modal includes the original context, replacement, a short explanation, **Apply fix**, and **Ignore**.
-Applying a fix uses an editor transaction and rechecks the changed text.
+The modal groups edits by paragraph and shows the original context, each word/punctuation replacement, and a short explanation.
+Use **Accept edit** or **Ignore edit** for each piece, or **Accept all in suggestion** for that paragraph's pending changes.
+After each acceptance, the modal stays open and the remaining spans and editor marks are re-anchored immediately, without another model request.
+Ignored edits stay dismissed during the review, including when other pieces are accepted.
 
-Use **Local Grammar: Check current note and review all suggestions** (`Ctrl+Shift+G`, or `Cmd+Shift+G` on macOS) to review the entire current note.
+Use **Open Grammar: Check current note and review all suggestions** (`Ctrl+Shift+G`, or `Cmd+Shift+G` on macOS) to review the entire current note.
+The full list adds **Accept all in note**, which applies only the still-pending edits, not ignored pieces.
 Obsidian's hotkey settings can change these bindings if another command already uses them.
 The status bar shows background progress, suggestion count, or unavailable state.
 
@@ -81,14 +86,18 @@ The status bar shows background progress, suggestion count, or unavailable state
 5. Click **Aa✓** in the toolbar to open the review panel.
 
 Logseq uses a block-review panel rather than modifying the application's editor DOM.
-The panel shows the checked block text with underlined mistakes, individual suggestions, **Apply fix**, and **Ignore**.
+The panel shows the checked block text with underlined mistakes and paragraph suggestions containing individually reviewable word, punctuation, and spacing edits.
 Click an underlined mistake to focus its fix button.
 This keeps Logseq links, properties, editing buffers, and the application's block ownership under its supported plugin API.
 Marks appear in this panel, not directly inside Logseq's textarea.
 
-Use **Local Grammar: check current block** (`Ctrl+Shift+G` / `Cmd+Shift+G`) or **Check block** in the panel for an on-demand check.
-Use **Local Grammar: check current page** or **Check page** to review all blocks on the current page, including nested blocks.
-Applying a fix re-reads the block, checks its exact snapshot, commits an active editing buffer if necessary, updates through `Editor.updateBlock`, and rechecks that block.
+Use **Open Grammar: check current block** (`Ctrl+Shift+G` / `Cmd+Shift+G`) or **Check block** in the panel for an on-demand check.
+Use **Open Grammar: check current page** or **Check page** to review all blocks on the current page, including nested blocks.
+Use **Accept edit** or **Ignore edit** for one piece, **Accept all in suggestion** for a paragraph, or **Accept all in page list** for every pending edit in all checked blocks.
+The page-list action also works when the list contains only the current block.
+Applying re-reads each affected block, checks its exact snapshot, commits an active editing buffer if necessary, and updates through `Editor.updateBlock`.
+Remaining pieces are re-anchored locally, so a dismissed correction cannot reappear just because another piece was accepted.
+Accept-all preflights every block before starting and rechecks each before its write; Logseq has no multi-block transaction, so an error during a page operation may leave earlier blocks applied and later ones still pending.
 **Close** or `Escape` dismisses the panel without changing text.
 
 This integration targets Logseq's file-based desktop graphs, not its DB version.
@@ -116,7 +125,8 @@ Disabled languages produce no suggestions.
 An in-memory cache reuses results for unchanged paragraphs, keyed by their text, endpoint, model, and enabled languages.
 It retains at most 128 entries and does not write note text to disk.
 Settings changes clear the cache and pending results.
-**Ignore** dismisses a suggestion for the current text, not a permanent dictionary entry; changing the text or reloading the plugin allows it to be checked again.
+**Ignore edit** dismisses a piece for the current review, not a permanent dictionary entry.
+Typing, explicitly checking changed text again, or reloading the plugin allows it to be checked again.
 
 ## How checking and syntax protection work
 
@@ -131,7 +141,10 @@ flowchart LR
 ```
 
 The model returns complete corrected text and an `en` or `de` language tag, not character offsets.
-The core derives original-text UTF-16 spans by diffing, so repeated words, insertions, deletions, German umlauts, and emoji do not depend on model-generated coordinates.
+The core aligns word, punctuation, and whitespace tokens against the original text to derive UTF-16 spans, so repeated words, insertions, deletions, German umlauts, and emoji do not depend on model-generated coordinates.
+Whitespace normalization is a separate edit rather than an anchor that can pair a replacement with the next word.
+The shared review snapshot applies selected edits in reverse span order and shifts every remaining span by the exact preceding length changes.
+Typing invalidates that snapshot; stale modal/panel actions cannot apply to new text.
 Suggestions contain the exact original substring, replacement, a short generic spelling/grammar or punctuation explanation, category, and language.
 Categories are intentionally coarse: spelling and inflection corrections are grouped under `grammar`; punctuation-only changes use `punctuation`.
 No style or tone rewriting is requested.
@@ -278,12 +291,13 @@ npm run typecheck
 npm run build
 ```
 
-Core tests cover exact spans and application, whole-word suggestions, repeated words, insertions/deletions, UTF-16 offsets, protected syntax, multi-backtick code, mixed-language paragraphs, the translation guard, edge whitespace, disabled languages, recorded real model outputs, paragraph cache reuse, cancellation, actionable errors, and cloud/remote-model rejection.
+Core tests cover exact spans and application, whole-word suggestions, double-space alignment, independent punctuation edits, arbitrary-order acceptance and ignore, paragraph and whole-list acceptance, re-anchoring, stale actions, repeated words, insertions/deletions, UTF-16 offsets, protected syntax, multi-backtick code, mixed-language paragraphs, the translation guard, edge whitespace, disabled languages, recorded real model outputs, paragraph cache reuse, cancellation, actionable errors, and cloud/remote-model rejection.
 They run without a GPU, Ollama, app installation, or network access.
 CI runs the same tests, type check, and builds on Node.js 22.
 
 The plugins were exercised in real desktop Logseq 0.10.15 and Obsidian 1.14.4 using a throwaway graph and vault.
-Typing produced visible suggestions and one-click fixes changed only the selected mistake.
+Real-model checks produced visible suggestions; individual edits, suggestion accept-all, and whole-note/page accept-all were exercised in both apps.
+Accepting a spacing edit re-anchored later corrections correctly, ignored words stayed untouched, and links, code, tags, URLs, and LaTeX remained unchanged.
 Obsidian's real-editor stale-modal scenario was also exercised: after replacing the underlying note, an obsolete fix is rejected and the new text remains unchanged.
 No personal graph or vault is needed for development or validation.
 

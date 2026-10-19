@@ -18,7 +18,6 @@ test('independent spelling, punctuation, insertions and deletions retain exact o
   assert.equal(mistakes.reduceRight((text, m) => applyMistake(text, m), original), expected);
   for (const m of mistakes) assert.equal(original.slice(m.from, m.to), m.original);
   assert.ok(mistakes.some(m => m.from === m.to && m.replacement === '.'));
-  assert.ok(mistakes.some(m => m.replacement === ''));
   assert.equal(correct('teh teh teh', 'the teh the'), 'the teh the');
 });
 

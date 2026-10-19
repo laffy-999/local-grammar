@@ -16,5 +16,5 @@ section { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 2px;
 mark { background: transparent; color: inherit; text-decoration: underline wavy #e36666; text-underline-offset: 4px; cursor: pointer; }
 article { padding: 14px; border: 1px solid var(--line); border-radius: 9px; margin: 12px 0; }
 article small, article strong { display: block; }
-article strong { margin-top: 8px; overflow-wrap: anywhere; }
+article strong { margin-top: 8px; overflow-wrap: anywhere; white-space: pre-wrap; }
 article p { color: var(--muted); line-height: 1.5; font-size: 13px; }

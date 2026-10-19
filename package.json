@@ -1,5 +1,5 @@
 {
-  "name": "local-grammar",
+  "name": "open-grammar",
   "version": "0.1.0",
   "private": true,
   "description": "Local English and German grammar checking for Logseq and Obsidian",

@@ -1,0 +1,20 @@
+:root { color-scheme: light dark; font-family: Inter, system-ui, sans-serif; font-size: 14px; --panel: light-dark(#fff, #20262d); --text: light-dark(#24313d, #e2e8f0); --muted: light-dark(#60707e, #9fadb8); --line: light-dark(#dbe2e8, #39434e); --accent: light-dark(#126c58, #60d7bb); }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 4px; background: transparent; color: var(--text); }
+#app { height: calc(100vh - 8px); overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: 0 8px 30px #0003; }
+header, nav, .actions { display: flex; gap: 8px; align-items: center; }
+header { justify-content: space-between; }
+h2 { margin: 0 0 12px; font-size: 22px; letter-spacing: -.5px; }
+nav { flex-wrap: wrap; margin: 10px 0 16px; }
+button { font: inherit; padding: 8px 12px; border: 1px solid var(--line); border-radius: 7px; color: var(--text); background: transparent; cursor: pointer; }
+button:hover { border-color: var(--accent); }
+button:focus-visible, mark:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+button.primary { background: var(--accent); color: light-dark(#fff, #142c26); border-color: var(--accent); font-weight: 600; }
+.status, small { color: var(--muted); font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+section { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 2px; }
+.preview { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.9; }
+mark { background: transparent; color: inherit; text-decoration: underline wavy #e36666; text-underline-offset: 4px; cursor: pointer; }
+article { padding: 14px; border: 1px solid var(--line); border-radius: 9px; margin: 12px 0; }
+article small, article strong { display: block; }
+article strong { margin-top: 8px; overflow-wrap: anywhere; white-space: pre-wrap; }
+article p { color: var(--muted); line-height: 1.5; font-size: 13px; }

@@ -1,0 +1,32 @@
+{
+  "name": "open-grammar",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local English and German grammar checking for Logseq and Obsidian",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "benchmark": "tsx scripts/benchmark.ts",
+    "summarize": "tsx scripts/summarize.ts"
+  },
+  "dependencies": {
+    "@logseq/libs": "^0.0.17",
+    "diff": "^8.0.2"
+  },
+  "devDependencies": {
+    "@codemirror/state": "^6.5.2",
+    "@codemirror/view": "^6.38.6",
+    "@types/diff": "^7.0.2",
+    "@types/node": "^24.0.0",
+    "esbuild": "^0.25.0",
+    "obsidian": "^1.8.7",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.2": true
+  }
+}

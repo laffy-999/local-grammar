@@ -1,0 +1,29 @@
+{
+  "source": "Ollama llama3.2, digest a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72, shared prompt, recorded 2026-10-16",
+  "cases": [
+    {
+      "original": "I recieved teh notes from the meeting yesterday.",
+      "content": "{\"language\":\"en\",\"corrected\":\"I received the notes from the meeting yesterday.\"}",
+      "expected": "I received the notes from the meeting yesterday.",
+      "language": "en"
+    },
+    {
+      "original": "I recieved a message from [[Jhon]] about `teh_flag` #work.",
+      "content": "{\"language\":\"en\",\"corrected\":\"I received a message from LGKEEP0TOKEN about LGKEEP1TOKEN LGKEEP2TOKEN.\"}",
+      "expected": "I received a message from [[Jhon]] about `teh_flag` #work.",
+      "language": "en"
+    },
+    {
+      "original": "Ich habe ein wichtige Frage, weil ich das nicht verstehe.",
+      "content": "{\"language\":\"de\",\"corrected\":\"Ich habe eine wichtige Frage, weil ich das nicht verstehe.\"}",
+      "expected": "Ich habe eine wichtige Frage, weil ich das nicht verstehe.",
+      "language": "de"
+    },
+    {
+      "original": "Wir treffen uns am montag und besprechen die ergebnisse.",
+      "content": "{\"language\":\"de\",\"corrected\":\"Wir treffen uns am Montag und besprechen die Ergebnisse.\"}",
+      "expected": "Wir treffen uns am Montag und besprechen die Ergebnisse.",
+      "language": "de"
+    }
+  ]
+}

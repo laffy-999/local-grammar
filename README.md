@@ -283,10 +283,39 @@ The tested Obsidian `app://` and Logseq `file://` plugin builds reached the runn
 If a different packaging/origin produces a CORS error, allow only that application's exact origin in Ollama's `OLLAMA_ORIGINS` configuration and restart your own Ollama service.
 Do not expose Ollama publicly, set a blanket wildcard origin, disable web security, or substitute a cloud model to work around a connection error.
 
+## Hyprland desktop shortcut (experimental)
+
+`desktop/lg-grammar` checks a focused Hyprland/Wayland text field using the local Ollama model.
+The shortcut reviews one word, punctuation, or whitespace edit at a time with nearby context.
+Choose **Accept**, **Skip**, **Accept all remaining**, **Copy corrected text**, or **Cancel**.
+The first dialog labels the one-step accept-all choice **Apply all corrections**.
+After the last edit, only accepted changes replace the field; skipping every edit or cancelling leaves it unchanged.
+Copy includes previously accepted changes and all remaining suggestions, but preserves previously skipped edits.
+Terminal primary selections cannot be replaced; after reviewing edits, explicitly choose **Copy reviewed text**.
+
+How it works:
+
+1. Non-terminal windows receive `Ctrl+A` then `Ctrl+C` through Hyprland's `send_shortcut`; terminals read the current primary (mouse) selection instead, because `Ctrl+C` would send SIGINT.
+2. The local model checks text paragraph by paragraph using the same prompt and JSON schema as the plugins.
+3. Edits are reviewed in rofi, then the original field is reselected and the reviewed text pasted if at least one edit was accepted.
+4. The clipboard is saved before grabbing and restored after applying, cancelling, or skipping all edits; choosing Copy keeps the copied result.
+
+Hyprland bind (Lua config):
+
+```lua
+exec("SUPER + ALT + G", "app2unit -- <repo>/desktop/lg-grammar")
+```
+
+Requirements: `hyprctl`, `wl-clipboard`, `rofi`, `notify-send`, and local Ollama with the configured model.
+Overrides: `LG_URL`, `LG_MODEL` (default `qwen3.5:4b`), `LG_AUTO_APPLY=1` to apply without review, and `LG_ROFI` for a dialog executable (useful for scripted testing).
+The selection flash from `Ctrl+A` remains visible; password and copy-blocking fields cannot be edited.
+Protected plugin syntax is not guarded on this desktop path, and Hyprland's Lua `send_shortcut` dispatcher is required.
+
 ## Development and verification
 
 ```sh
 npm test
+python -m unittest discover -s tests -p 'test_desktop.py'
 npm run typecheck
 npm run build
 ```
@@ -306,7 +335,8 @@ Source layout:
 - `src/core/`: local-model guard, prompt, parsing, syntax ranges, diff spans, cache, and application helpers.
 - `src/obsidian/`: CodeMirror decorations, note review modal, commands, and settings.
 - `src/logseq/`: supported block API, review panel, commands, and settings.
+- `desktop/`: Hyprland shortcut, rofi theme, and pure per-edit review helpers.
 - `scripts/`: bundling and reproducible synthetic model comparison.
-- `tests/`: deterministic core behavior and recorded-output fixtures.
+- `tests/`: deterministic plugin and desktop review behavior with recorded plugin model outputs.
 
 Marketplace publication, mobile support, DB-version Logseq graphs, cloud accounts/models, external language-checking servers, and rewriting/tone tools are out of scope.

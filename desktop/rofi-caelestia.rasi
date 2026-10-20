@@ -1,0 +1,77 @@
+/* lg-grammar rofi theme, matched to the Caelestia/Material You dark scheme.
+   Colors come from ~/.config/hypr/scheme/current.conf. */
+
+* {
+    bg:            #131317;
+    bg-low:        #1b1b1f;
+    bg-high:       #2a2a2e;
+    fg:            #e4e1e7;
+    fg-dim:        #c6c5d1;
+    accent:        #bac3ff;
+    on-accent:     #232c60;
+    border-col:    #46464f;
+
+    background-color: transparent;
+    text-color:       @fg;
+    font:             "Rubik 13";
+}
+
+window {
+    width:            760px;
+    background-color: @bg;
+    border:           1px;
+    border-color:     @border-col;
+    border-radius:    18px;
+    padding:          18px;
+}
+
+mainbox {
+    spacing: 14px;
+}
+
+inputbar {
+    background-color: @bg-low;
+    border-radius:    12px;
+    padding:          10px 14px;
+    spacing:          10px;
+}
+
+prompt {
+    text-color: @accent;
+    font:       "Rubik Bold 13";
+}
+
+entry {
+    text-color: @fg;
+}
+
+message {
+    background-color: @bg-low;
+    border-radius:    12px;
+    padding:          14px;
+}
+
+textbox {
+    text-color: @fg-dim;
+}
+
+listview {
+    spacing:      6px;
+    fixed-height: false;
+}
+
+element {
+    background-color: @bg-low;
+    border-radius:    10px;
+    padding:          10px 14px;
+}
+
+element selected {
+    background-color: @accent;
+    text-color:       @on-accent;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+}

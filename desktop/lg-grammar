@@ -198,6 +198,7 @@ def ask_edit(context, index, total, replaceable):
         options[2] = "Apply all corrections"
     proc = run(
         os.environ.get("LG_ROFI", "rofi"), "-dmenu", "-i",
+        "-hover-select", "-me-select-entry", "", "-me-accept-entry", "MousePrimary",
         "-theme", THEME,
         "-p", f"Open Grammar {index + 1}/{total}",
         "-mesg", context,
@@ -230,10 +231,13 @@ def review_edits(original, edits, replaceable):
         return "apply", result
     # Terminal primary selections cannot be replaced; request explicit copy.
     proc = run(os.environ.get("LG_ROFI", "rofi"), "-dmenu", "-i",
+               "-hover-select", "-me-select-entry", "", "-me-accept-entry", "MousePrimary",
                "-theme", THEME, "-p", "Open Grammar",
                "-mesg", "Review complete. Copy accepted corrections?",
                input="Copy reviewed text\nCancel")
     return ("copy", result) if proc.returncode == 0 and proc.stdout.strip() == "Copy reviewed text" else ("cancel", original)
+
+
 
 
 def main():

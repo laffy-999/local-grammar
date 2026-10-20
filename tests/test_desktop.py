@@ -77,6 +77,16 @@ class DialogTests(unittest.TestCase):
              patch.object(SCRIPT, 'notify'):
             self.assertEqual(SCRIPT.main(), 0)
         return apply.call_args_list, saved, self.log.read_text() if self.log.exists() else ''
+    def test_all_dialogs_enable_mouse_selection(self):
+        _, _, dialogs = self.run_flow(
+            ['Accept all remaining', 'Copy reviewed text'], replaceable=False
+        )
+        rows = [line for line in dialogs.splitlines() if "'-dmenu'" in line]
+        self.assertEqual(len(rows), 2)
+        for line in rows:
+            for option in ("'-hover-select'", "'-me-select-entry'", "''", "'-me-accept-entry'", "'MousePrimary'"):
+                self.assertIn(option, line)
+
 
     def test_skip_accept_applies_only_reviewed_edit(self):
         applied, clipboard, dialogs = self.run_flow(['Skip', 'Accept'])

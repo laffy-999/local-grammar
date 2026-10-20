@@ -46,7 +46,7 @@ OUTPUT_SCHEMA = {
 TERMINAL_CLASSES = {
     "kitty", "foot", "footclient", "alacritty", "wezterm", "org.wezfurlong.wezterm",
     "com.mitchellh.ghostty", "ghostty", "konsole", "xterm", "st", "rio",
-    "dev.warp.Warp", "yakuake", "tilix", "kgx", "gnome-terminal-server",
+    "dev.warp.warp", "yakuake", "tilix", "kgx", "gnome-terminal-server",
 }
 
 

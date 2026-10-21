@@ -77,6 +77,7 @@ class DialogTests(unittest.TestCase):
              patch.object(SCRIPT, 'notify'):
             self.assertEqual(SCRIPT.main(), 0)
         return apply.call_args_list, saved, self.log.read_text() if self.log.exists() else ''
+
     def test_all_dialogs_enable_mouse_selection(self):
         _, _, dialogs = self.run_flow(
             ['Accept all remaining', 'Copy reviewed text'], replaceable=False

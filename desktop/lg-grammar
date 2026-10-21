@@ -238,8 +238,6 @@ def review_edits(original, edits, replaceable):
     return ("copy", result) if proc.returncode == 0 and proc.stdout.strip() == "Copy reviewed text" else ("cancel", original)
 
 
-
-
 def main():
     win = active_window()
     if os.environ.get("LG_DEBUG"):

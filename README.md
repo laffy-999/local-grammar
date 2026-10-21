@@ -288,6 +288,7 @@ Do not expose Ollama publicly, set a blanket wildcard origin, disable web securi
 `desktop/lg-grammar` checks a focused Hyprland/Wayland text field using the local Ollama model.
 The shortcut reviews one word, punctuation, or whitespace edit at a time with nearby context.
 Choose **Accept**, **Skip**, **Accept all remaining**, **Copy corrected text**, or **Cancel**.
+Choose any option with a single left click; moving the pointer highlights the row, and keyboard selection remains available.
 The first dialog labels the one-step accept-all choice **Apply all corrections**.
 After the last edit, only accepted changes replace the field; skipping every edit or cancelling leaves it unchanged.
 Copy includes previously accepted changes and all remaining suggestions, but preserves previously skipped edits.

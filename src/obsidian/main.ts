@@ -186,6 +186,7 @@ class GrammarSettings extends PluginSettingTab {
     root.createEl('p', { text: 'Only loopback Ollama servers are accepted. Install the model with: ollama pull ' + this.plugin.settings.model });
     new Setting(root).setName('Ollama URL').addText(t => t.setValue(this.plugin.settings.url).onChange(async value => { this.plugin.settings.url = value.trim(); await this.plugin.changed(); }));
     new Setting(root).setName('Model').addText(t => t.setValue(this.plugin.settings.model).onChange(async value => { this.plugin.settings.model = value.trim(); await this.plugin.changed(); }));
+    new Setting(root).setName('Keep model loaded').setDesc('Keeps the model resident between checks (~0.9 GB GPU memory, or RAM on CPU). Disable for five-minute idle expiry after the next check.').addToggle(t => t.setValue(this.plugin.settings.keepLoaded).onChange(async value => { this.plugin.settings.keepLoaded = value; await this.plugin.changed(); }));
     new Setting(root).setName('Check after a typing pause').addToggle(t => t.setValue(this.plugin.settings.autoCheck).onChange(async value => { this.plugin.settings.autoCheck = value; await this.plugin.changed(); }));
     for (const language of ['en', 'de'] as const) new Setting(root).setName(language === 'en' ? 'English' : 'German').addToggle(t => t.setValue(this.plugin.settings.languages.includes(language)).onChange(async enabled => {
       this.plugin.settings.languages = enabled ? [...this.plugin.settings.languages, language] : this.plugin.settings.languages.filter(l => l !== language);

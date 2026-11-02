@@ -19,7 +19,8 @@ const root = document.getElementById('app')!;
 
 function settings(): Settings {
   return { url: String(logseq.settings?.url ?? DEFAULTS.url), model: String(logseq.settings?.model ?? DEFAULTS.model),
-    autoCheck: Boolean(logseq.settings?.autoCheck ?? true), languages: (['en', 'de'] as const).filter(l => logseq.settings?.[l] !== false) };
+    autoCheck: Boolean(logseq.settings?.autoCheck ?? true), languages: (['en', 'de'] as const).filter(l => logseq.settings?.[l] !== false),
+    keepLoaded: Boolean(logseq.settings?.keepLoaded ?? DEFAULTS.keepLoaded) };
 }
 
 function button(label: string, action: () => void, primary = false) {
@@ -193,6 +194,7 @@ async function main() {
   logseq.useSettingsSchema([
     { key: 'url', title: 'Ollama URL (loopback only)', type: 'string', default: DEFAULTS.url, description: 'Ollama must run on this machine.' },
     { key: 'model', title: 'Model', type: 'string', default: DEFAULTS.model, description: `Install with: ollama pull ${DEFAULTS.model}` },
+    { key: 'keepLoaded', title: 'Keep model loaded', type: 'boolean', default: DEFAULTS.keepLoaded, description: 'Keeps the model resident between checks (~0.9 GB GPU memory, or RAM on CPU). Disable for five-minute idle expiry after the next check.' },
     { key: 'autoCheck', title: 'Check after a typing pause', type: 'boolean', default: true, description: 'Checks the edited block without interrupting typing.' },
     { key: 'en', title: 'English', type: 'boolean', default: true, description: 'Check English paragraphs.' },
     { key: 'de', title: 'German', type: 'boolean', default: true, description: 'Check German paragraphs.' },

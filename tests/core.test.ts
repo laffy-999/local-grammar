@@ -8,7 +8,7 @@ const correct = (text: string, corrected: string) => deriveMistakes(text, correc
 function localTransport(reply: Fetcher): Fetcher {
   return async (url, init) => String(url).endsWith('/api/tags')
     ? Response.json({ models: [DEFAULTS.model, 'another'].map(name => ({ name, details: { format: 'gguf' } })) })
-    : reply(url, init);
+    : String(url).endsWith('/api/show') ? Response.json({ capabilities: ['completion'] }) : reply(url, init);
 }
 
 test('independent spelling, punctuation, insertions and deletions retain exact original spans', () => {
@@ -125,9 +125,9 @@ test('stale requests abort their actual transport and cannot publish cached resu
 
 test('offline and missing-model errors include exact actionable model pull command', async () => {
   const offline = new Checker((async () => { throw new Error('ECONNREFUSED'); }) as Fetcher);
-  await assert.rejects(offline.check('hello', DEFAULTS), /ollama serve.*ollama pull qwen3\.5:4b/);
+  await assert.rejects(offline.check('hello', DEFAULTS), error => error instanceof Error && error.message.includes('ollama serve') && error.message.includes(`ollama pull ${DEFAULTS.model}`));
   const missing = new Checker((async () => new Response('', { status: 404 })) as Fetcher);
-  await assert.rejects(missing.check('hello', DEFAULTS), /ollama pull qwen3\.5:4b/);
+  await assert.rejects(missing.check('hello', DEFAULTS), error => error instanceof Error && error.message.includes(`ollama pull ${DEFAULTS.model}`));
 });
 
 test('cloud models and disguised remote aliases never receive note text', async () => {

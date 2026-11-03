@@ -25,18 +25,22 @@ The panel lists each block's suggestions, and links, code and tags are untouched
 - Desktop Logseq with file-based graphs, or desktop Obsidian with its CodeMirror 6 editor.
 - [Ollama](https://ollama.com/download) running on the same machine.
 - Node.js 22 or newer to build the plugins.
-- Approximately 3 GiB of available GPU memory for the default model at the configured 4,096-token context, plus desktop/application overhead.
-  Ollama can also run on CPU, but CPU latency was not measured here.
+- Approximately 0.9 GB of available GPU memory for the default LFM2.5 1.2B Instruct Q4_K_M model at the configured 4,096-token context, plus desktop/application overhead.
+  CPU-only operation uses RAM instead; a four-thread, 2,048-context benchmark used about 0.84 GiB runner RSS and took roughly 5-6 seconds per warm paragraph.
+  The model fits a 16 GB laptop's memory budget, but latency on a particular low-end laptop or Mac has not been validated.
 
 Install the default local model:
 
 ```sh
-ollama pull qwen3.5:4b
+ollama pull hf.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF:Q4_K_M
 ```
 
 If Ollama is not already running as an application or service, start `ollama serve` in a separate terminal.
 The default endpoint is `http://localhost:11434`.
 There is no need to expose Ollama to the network.
+
+The weights use the [LFM Open License v1.0](https://huggingface.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF/blob/main/LICENSE), not Apache-2.0.
+Review its redistribution conditions and commercial-use revenue threshold before commercial use.
 
 Only loopback URLs (`localhost`, `127.0.0.1`, or `[::1]`) are accepted.
 Before sending any note text, the checker reads installed-model metadata and requires local GGUF weights.
@@ -108,6 +112,10 @@ Each plugin exposes:
 
 - **Ollama URL**: loopback only.
 - **Model**: an installed local Ollama model name.
+- **Keep model loaded**: enabled by default.
+  Each inference request uses `keep_alive: -1`, keeping the model resident between checks after its first use.
+  Disable this setting for five-minute idle expiry, effective after the next uncached check.
+  Residency reserves roughly 0.9 GB GPU memory (or RAM on CPU-only machines); it is not a promise of zero battery or power cost.
 - **Check after a typing pause**: enabled by default.
 - **English** and **German**: independently enabled or disabled.
 
@@ -168,8 +176,18 @@ A model request times out after two minutes, and a local-model metadata request 
 
 ## Choosing the model
 
-**Default: `qwen3.5:4b` (Ollama, Q4_K_M, thinking disabled).**
-No lighter candidate matched it on both preservation and accuracy, so it stays.
+**Default: `hf.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF:Q4_K_M`**, the official LiquidAI LFM2.5 1.2B Instruct quantization.
+The desktop tool and both plugins use it for new/default configurations; existing saved model choices and the desktop `LG_MODEL` override are preserved.
+Every inference request uses temperature `0`, presence and frequency penalties `0`, repeat penalty `1.0`, the existing 4,096-token context, and the 1,600-token output cap.
+Ollama's model capabilities determine whether to send `think: false`; unsupported models receive no thinking flag.
+
+The 2026-11-02 local GPU comparison measured warm paragraph inference around 0.38-0.52 seconds for LFM, versus 2.7-3.1 seconds for the previous Qwen3.5 4B default.
+This prioritizes responsiveness and lower resident memory, not a claim of equal correction quality.
+LFM sometimes rephrases, removes text, changes names, or mislabels the language; always review the diff before accepting.
+JSON validity does not establish that meaning was preserved.
+Automatic application remains disabled by default.
+
+The following October benchmark is historical evidence for the previous model choice, not a benchmark of the new default.
 
 ### How the candidates were found
 
@@ -234,11 +252,11 @@ Fix and control counts are deterministic and unaffected.
 Single-pass numbers on 63 hand-written paragraphs are a ranking aid, not a statistical benchmark or a Grammarly comparison.
 The harness unloads every model currently loaded in Ollama before each candidate to measure a cold start.
 
-### Decision
+### Previous model decision (2026-10-16)
 
-Order of criteria: preservation, then accuracy, then size and latency.
+That comparison prioritized preservation, then accuracy, then size and latency.
 
-- `qwen3.5:4b` kept all 24 controls and fixed 32 of 39 errors, the best accuracy of any model that preserves everything. It is the only candidate with both, so it is the default.
+- `qwen3.5:4b` kept all 24 controls and fixed 32 of 39 errors, the best accuracy of any model that preserved everything in that corpus, so it was the previous default.
 - `qwen3:1.7b` also kept 24/24, but only because the guard discards the paragraphs it translated; it then fixes just 24 of 39 and leaves most English errors unfixed. The lighter model is a worse checker, not an equal one.
 - `qwen3.5:2b` is the best lighter alternative: 29 fixes and 23 controls. Use it with `ollama pull qwen3.5:2b` if memory is tight.
 - Models below 1B or 1.5B (`qwen3.5:0.8b`, `gemma3:1b`, `llama3.2:1b`, `stablelm2:1.6b`, EuroLLM, quill) either rewrite controls, fix too little, or are rejected often.
@@ -308,7 +326,12 @@ exec("SUPER + ALT + G", "app2unit -- <repo>/desktop/lg-grammar")
 ```
 
 Requirements: `hyprctl`, `wl-clipboard`, `rofi`, `notify-send`, and local Ollama with the configured model.
-Overrides: `LG_URL`, `LG_MODEL` (default `qwen3.5:4b`), `LG_AUTO_APPLY=1` to apply without review, and `LG_ROFI` for a dialog executable (useful for scripted testing).
+Overrides: `LG_URL`, `LG_MODEL` (default `hf.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF:Q4_K_M`), `LG_KEEP_ALIVE`, `LG_AUTO_APPLY=1` to apply without review, and `LG_ROFI` for a dialog executable (useful for scripted testing).
+`LG_KEEP_ALIVE` defaults to `-1` (resident after the first check); set it to `5m` for five-minute idle expiry or `0` to unload after each request.
+Every chunk request preserves that policy.
+Resident memory costs about 0.9 GB GPU memory, or RAM on CPU-only machines.
+To release the model immediately, run `ollama stop hf.co/LiquidAI/LFM2.5-1.2B-Instruct-GGUF:Q4_K_M`; set the plugin toggle or desktop override as well so the next check does not pin it again.
+Keep `LG_AUTO_APPLY` unset when using this model: its suggestions can change meaning and must be reviewed.
 The selection flash from `Ctrl+A` remains visible; password and copy-blocking fields cannot be edited.
 Protected plugin syntax is not guarded on this desktop path, and Hyprland's Lua `send_shortcut` dispatcher is required.
 
